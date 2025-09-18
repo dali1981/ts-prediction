@@ -5,8 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict
 
-from transformers import TimeSeriesTransformerConfig, TimeSeriesTransformerForPrediction
-
+try:  # pragma: no cover - optional dependency
+    from transformers import TimeSeriesTransformerConfig, TimeSeriesTransformerForPrediction
+except ImportError:  # pragma: no cover
+    TimeSeriesTransformerConfig = None
+    TimeSeriesTransformerForPrediction = None
 
 @dataclass(slots=True)
 class HFTimeSeriesConfig:
@@ -26,6 +29,8 @@ class TimeSeriesTransformerWrapper:
             "input_size": config.input_size,
         }
         cfg_dict.update(config.extra)
+        if TimeSeriesTransformerConfig is None or TimeSeriesTransformerForPrediction is None:
+            raise RuntimeError("Hugging Face transformers package is not available")
         self.config = TimeSeriesTransformerConfig(**cfg_dict)
         self.model = TimeSeriesTransformerForPrediction(self.config)
 

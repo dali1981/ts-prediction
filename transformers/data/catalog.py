@@ -54,9 +54,9 @@ class ZipArchive:
 class DataCatalog:
     """Registry for tabular financial datasets."""
 
-    def __init__(self, root: Path, cache_dir: Optional[Path] = None) -> None:
-        self.root = root
-        self.cache_dir = cache_dir or root / ".cache"
+    def __init__(self, root: str | Path, cache_dir: Optional[Path] = None) -> None:
+        self.root = Path(root)
+        self.cache_dir = Path(cache_dir) if cache_dir else self.root / ".cache"
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.sources: Dict[str, DataSource] = {}
         self.archives: Dict[str, ZipArchive] = {}

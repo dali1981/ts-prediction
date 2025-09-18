@@ -15,3 +15,5 @@ notebooks/_tmp/
 
 # Model artifacts
 artifacts/
+trading_project_transformers.egg-info/
+uv.lock

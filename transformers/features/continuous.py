@@ -51,3 +51,13 @@ class ContinuousFeatureBuilder:
             out["dow_cos"] = np.cos(2 * np.pi * time_index.dt.dayofweek / 7)
 
         return out
+
+
+
+def generate_features(frame, config=None):
+    """Helper to mirror legacy API by returning engineered features."""
+    builder = ContinuousFeatureBuilder(config)
+    return builder.transform(frame)
+
+
+__all__ = ["ContinuousFeatureBuilder", "ContinuousFeatureConfig", "generate_features"]

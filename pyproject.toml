@@ -16,7 +16,9 @@ dependencies = [
     "pytorch-lightning>=2.3",
     "torch>=2.2",
     "transformers>=4.38",
-    "pyyaml>=6.0"
+    "pyyaml>=6.0",
+    "jupyter>=1.1.1",
+    "nbconvert>=7.16.6",
 ]
 
 [project.optional-dependencies]

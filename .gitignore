@@ -17,3 +17,4 @@ notebooks/_tmp/
 artifacts/
 trading_project_transformers.egg-info/
 uv.lock
+notebooks/*.executed.ipynb

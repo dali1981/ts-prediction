@@ -39,9 +39,9 @@ class SlidingWindowDataset(Dataset):
 @dataclass(slots=True)
 class WindowGenerator:
     config: DataConfig
+    vocab: Optional[BrooksTokenVocabulary] = None
 
     def __post_init__(self) -> None:
-        self.vocab = None
         if self.config.token_column and self.config.vocab_path:
             self.vocab = BrooksTokenVocabulary.from_json(Path(self.config.vocab_path))
 

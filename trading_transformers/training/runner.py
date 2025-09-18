@@ -33,6 +33,7 @@ class ExperimentRunner:
         self.catalog = catalog
         self._frame = data_frame
         self._report: dict[str, object] = {}
+        self._datamodule = None
 
     def load_frame(self) -> pd.DataFrame:
         if self._frame is not None:
@@ -96,6 +97,7 @@ class ExperimentRunner:
     def run(self) -> pl.Trainer:
         frame = self.load_frame()
         datamodule = self.build_datamodule(frame)
+        self._datamodule = datamodule
         backbone = self.build_backbone()
         module = self.build_module(backbone)
 
@@ -113,6 +115,15 @@ class ExperimentRunner:
         trainer.fit(module, datamodule=datamodule)
         self._report = self.generate_diagnostics(frame)
         return trainer
+
+    @property
+    def datamodule(self):
+        return self._datamodule
+
+    def test(self, trainer: pl.Trainer):
+        if self._datamodule is None:
+            raise RuntimeError("No datamodule available; run() must be called first")
+        return trainer.test(datamodule=self._datamodule)
 
     @property
     def report(self) -> dict[str, object]:

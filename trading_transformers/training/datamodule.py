@@ -133,6 +133,15 @@ class DataModuleBuilder:
         tgt_train, tgt_val, tgt_test = split(targets)
         tok_train, tok_val, tok_test = split(tokens, has_tokens=True)
 
+        if cont_val is None:
+            cont_val = cont[:0]
+            tgt_val = targets[:0]
+            tok_val = tokens[:0] if tokens is not None else None
+        if cont_test is None:
+            cont_test = cont[:0]
+            tgt_test = targets[:0]
+            tok_test = tokens[:0] if tokens is not None else None
+
         class SlidingWindowDataModule(pl.LightningDataModule):
             def __init__(self, batch_size: int):
                 super().__init__()
@@ -140,28 +149,16 @@ class DataModuleBuilder:
 
             def setup(self, stage: str | None = None) -> None:
                 self.train_dataset = SlidingWindowDataset(cont_train, tgt_train, tok_train)
-                self.val_dataset = (
-                    SlidingWindowDataset(cont_val, tgt_val, tok_val)
-                    if cont_val is not None and len(cont_val)
-                    else None
-                )
-                self.test_dataset = (
-                    SlidingWindowDataset(cont_test, tgt_test, tok_test)
-                    if cont_test is not None and len(cont_test)
-                    else None
-                )
+                self.val_dataset = SlidingWindowDataset(cont_val, tgt_val, tok_val)
+                self.test_dataset = SlidingWindowDataset(cont_test, tgt_test, tok_test)
 
             def train_dataloader(self):
                 return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True)
 
             def val_dataloader(self):  # pragma: no cover
-                if self.val_dataset is None:
-                    return []
                 return DataLoader(self.val_dataset, batch_size=self.batch_size)
 
             def test_dataloader(self):  # pragma: no cover
-                if self.test_dataset is None:
-                    return []
                 return DataLoader(self.test_dataset, batch_size=self.batch_size)
 
         return SlidingWindowDataModule(self.config.batch_size)

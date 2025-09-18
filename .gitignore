@@ -1,0 +1,17 @@
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+
+# Data dumps
+/data/
+!data/.gitkeep
+
+# Notebook temp outputs
+notebooks/_tmp/
+
+# OS files
+.DS_Store
+
+# Model artifacts
+artifacts/

@@ -1,0 +1,8 @@
+data:
+  csv: predictions.csv
+  signal_column: signal
+  returns_column: future_return
+  timestamp_column: timestamp
+  parse_dates: true
+backtest:
+  transaction_cost: 0.0001

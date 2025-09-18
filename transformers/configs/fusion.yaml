@@ -1,0 +1,27 @@
+name: fusion_example
+data:
+  source: synthetic
+  features: [open, high, low, close, volume]
+  target: close
+  lookback: 64
+  horizon: 8
+  batch_size: 64
+  val_fraction: 0.1
+  test_fraction: 0.1
+  token_column: brooks_token
+  vocab_path: notebooks/_tmp/brooks_vocab.json
+model:
+  type: fusion
+  d_model: 128
+  nheads: 4
+  depth: 2
+  token_embed_dim: 64
+optimizer:
+  lr: 0.001
+  weight_decay: 0.0001
+trainer:
+  max_epochs: 10
+  accelerator: auto
+  precision: 16-mixed
+  gradient_clip_val: 1.0
+output_dir: artifacts/fusion

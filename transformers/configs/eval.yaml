@@ -1,0 +1,6 @@
+data:
+  csv: predictions.csv
+  target_column: future_return
+  prediction_column: prediction
+regression: true
+directional: true

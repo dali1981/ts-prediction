@@ -6,7 +6,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 torch = pytest.importorskip("torch")
 
-from transformers.models import FusionBackbone, FusionConfig
+from trading_transformers.models import FusionBackbone, FusionConfig
 
 
 def test_fusion_backbone_forward():

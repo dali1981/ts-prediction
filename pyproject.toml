@@ -3,10 +3,10 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "trading-project-transformers"
+name = "trading-transformers-toolkit"
 version = "0.1.0"
 description = "Transformer-based financial time-series modeling toolkit"
-readme = {file = "transformers/README.md", content-type = "text/markdown"}
+readme = {file = "trading_transformers/README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 authors = [{name = "Mohamed Ali"}]
 license = {text = "Proprietary"}
@@ -16,8 +16,7 @@ dependencies = [
     "pytorch-lightning>=2.3",
     "torch>=2.2",
     "transformers>=4.38",
-    "pyyaml>=6.0",
-    "pytest>=8.4.2",
+    "pyyaml>=6.0"
 ]
 
 [project.optional-dependencies]
@@ -26,10 +25,11 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
+include = ["trading_transformers*"]
 exclude = ["tests"]
 
 [tool.setuptools.package-data]
-"transformers" = ["configs/*.yaml", "README.md"]
+"trading_transformers" = ["configs/*.yaml", "README.md"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

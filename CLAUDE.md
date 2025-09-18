@@ -24,16 +24,16 @@ This is a **transformer-based financial time-series modeling toolkit** for forec
 - `uv run pytest tests/test_<module>.py` - Run specific test module
 
 ### Core CLI Commands
-- **Training**: `uv run python -m transformers.training --config configs/patchtst.yaml --catalog data/catalog.json`
-- **Data management**: `uv run python -m transformers.data init --root data --zip-dir data/archives`
-- **Token analytics**: `uv run python -m transformers.tokenizers stats --input tokens.csv --column tokens`
-- **Backtesting**: `uv run python -m transformers.evaluation backtest --config configs/backtest.yaml`
+- **Training**: `uv run python -m trading_transformers.training --config configs/patchtst.yaml --catalog data/catalog.json`
+- **Data management**: `uv run python -m trading_transformers.data init --root data --zip-dir data/archives`
+- **Token analytics**: `uv run python -m trading_transformers.tokenizers stats --input tokens.csv --column tokens`
+- **Backtesting**: `uv run python -m trading_transformers.evaluation backtest --config configs/backtest.yaml`
 
 ## Architecture
 
 ### Package Structure
 ```
-transformers/
+trading_transformers/
 ├── data/           # DataCatalog, zip extraction, resampling utilities
 ├── features/       # Continuous bar features + Brooks tokenizer
 ├── tokenizers/     # Token vocabulary and analytics
@@ -61,7 +61,7 @@ transformers/
 
 ## Important Notes
 
-- All CLI tools support both module execution (`python -m transformers.training`) and direct execution
+- All CLI tools support both module execution (`python -m trading_transformers.training`) and direct execution
 - Configuration uses YAML format with experiment configs, data specs, and model hyperparameters
 - The fusion architecture requires both continuous features and token vocabularies
 - Backtesting uses walk-forward splits with purged/embargoed cross-validation

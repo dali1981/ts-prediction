@@ -5,7 +5,7 @@
 
 ## Completed
 - Packaging scaffold (`pyproject.toml`, `requirements.txt`) with pinned dependencies.
-- Initial package scaffolding (`transformers/` modules for data, features, models, training, evaluation).
+- Initial package scaffolding (`trading_transformers/` modules for data, features, models, training, evaluation).
 - Baseline feature builder and Brooks-style tokenizer prototype.
 - Data catalog with zip extraction utilities.
 - Data CLI and resampling helpers.

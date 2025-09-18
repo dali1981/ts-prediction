@@ -3,7 +3,7 @@
 from importlib.metadata import version, PackageNotFoundError
 
 try:
-    __version__ = version("trading_project_transformers")
+    __version__ = version("trading-transformers-toolkit")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "0.0.0"
 

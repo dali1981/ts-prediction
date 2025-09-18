@@ -1,4 +1,4 @@
-"""Entry point for `python -m transformers.data`."""
+"""Entry point for `python -m trading_transformers.data`."""
 
 from .cli import main
 

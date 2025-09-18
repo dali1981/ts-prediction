@@ -7,7 +7,7 @@ pd = pytest.importorskip("pandas")
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from transformers.evaluation.diagnostics import fusion_token_report
+from trading_transformers.evaluation.diagnostics import fusion_token_report
 from types import SimpleNamespace
 
 

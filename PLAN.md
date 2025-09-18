@@ -61,12 +61,12 @@
 - Logging & tracking: integrate with Weights & Biases or MLflow for experiment metadata, artifact storage, and hyperparameter sweeps.
 
 ## 7. Engineering & Infrastructure
-- Package code into `models/transformers/` with modules `data`, `features`, `tokenizers`, `models`, `training`, `evaluation`.
+- Package code into `models/trading_transformers/` with modules `data`, `features`, `tokenizers`, `models`, `training`, `evaluation`.
 - Implement unit/pytest suites for token logic, dataset slicing, and model forward passes (with small synthetic data).
 - Provide CLI entrypoints:
-  - `python -m transformers.train --config configs/patchtst.yaml`
-  - `python -m transformers.tokenize --input data/raw --output data/tokens`
-  - `python -m transformers.backtest --config configs/backtest.yaml`
+  - `python -m trading_transformers.train --config configs/patchtst.yaml`
+  - `python -m trading_transformers.tokenize --input data/raw --output data/tokens`
+  - `python -m trading_transformers.backtest --config configs/backtest.yaml`
 - Create notebooks or Markdown playbooks demonstrating:
   - Exploratory analysis & token vocabulary stats.
   - Training PatchTST baseline.
@@ -91,7 +91,7 @@
 - **Week 5+ (stretch)**: Learned VQ tokenizers, multimodal news fusion, microstructure module, reinforcement-style objectives.
 
 ## 10. Deliverables
-- Modular codebase under `models/transformers/` with documented APIs.
+- Modular codebase under `models/trading_transformers/` with documented APIs.
 - Configuration templates and reproducible training/backtesting scripts.
 - Experiment reports (Markdown/notebooks) with quantitative benchmarks vs. baselines.
 - Documentation of tokenizer grammar and usage guidelines.

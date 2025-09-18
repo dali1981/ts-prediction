@@ -6,8 +6,8 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 pd = pytest.importorskip("pandas")
 
-from transformers.features.tokens import BrooksTokenizer
-from transformers.tokenizers import BrooksTokenVocabulary, compute_stats, cooccurrence_matrix
+from trading_transformers.features.tokens import BrooksTokenizer
+from trading_transformers.tokenizers import BrooksTokenVocabulary, compute_stats, cooccurrence_matrix
 
 
 def test_compute_stats_and_vocab():

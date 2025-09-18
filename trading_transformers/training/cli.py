@@ -52,7 +52,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--catalog", required=True, help="Catalog JSON path")
     parser.add_argument("--diagnostics", help="Optional path to write diagnostics JSON")
     parser.add_argument("--accelerator", help="Override accelerator (cpu, mps, gpu, etc.)")
-    parser.add_argument("--devices", help="Override devices specification (e.g., 1, "auto")")
+    parser.add_argument("--devices", help="Override devices specification (e.g., 1, auto)")
     return parser
 
 

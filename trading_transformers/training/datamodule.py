@@ -156,12 +156,12 @@ class DataModuleBuilder:
 
             def val_dataloader(self):  # pragma: no cover
                 if self.val_dataset is None:
-                    return None
+                    return []
                 return DataLoader(self.val_dataset, batch_size=self.batch_size)
 
             def test_dataloader(self):  # pragma: no cover
                 if self.test_dataset is None:
-                    return None
+                    return []
                 return DataLoader(self.test_dataset, batch_size=self.batch_size)
 
         return SlidingWindowDataModule(self.config.batch_size)

@@ -21,6 +21,11 @@ from .config import ExperimentConfig
 from .datamodule import DataModuleBuilder
 from .lightning import ForecastingModule, OptimizerParams
 
+try:
+    from pytorch_lightning.loggers import CSVLogger
+except ModuleNotFoundError:  # pragma: no cover
+    CSVLogger = None
+
 
 class ExperimentRunner:
     def __init__(
@@ -34,6 +39,7 @@ class ExperimentRunner:
         self._frame = data_frame
         self._report: dict[str, object] = {}
         self._datamodule = None
+        self._logger = None
 
     def load_frame(self) -> pd.DataFrame:
         if self._frame is not None:
@@ -111,6 +117,11 @@ class ExperimentRunner:
         )
         if trainer_cfg.devices is not None:
             trainer_kwargs["devices"] = trainer_cfg.devices
+        if trainer_cfg.log_to_csv and CSVLogger is not None:
+            log_root = Path(self.config.output_dir)
+            log_root.mkdir(parents=True, exist_ok=True)
+            self._logger = CSVLogger(save_dir=str(log_root), name=self.config.name)
+            trainer_kwargs["logger"] = self._logger
         trainer = pl.Trainer(**trainer_kwargs)
         trainer.fit(module, datamodule=datamodule)
         self._report = self.generate_diagnostics(frame)
@@ -119,6 +130,11 @@ class ExperimentRunner:
     @property
     def datamodule(self):
         return self._datamodule
+
+    def metrics_path(self):
+        if self._logger is None:
+            return None
+        return Path(self._logger.log_dir) / "metrics.csv"
 
     def test(self, trainer: pl.Trainer):
         if self._datamodule is None:

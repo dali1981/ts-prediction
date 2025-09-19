@@ -133,24 +133,39 @@ class DataModuleBuilder:
         tgt_train, tgt_val, tgt_test = split(targets)
         tok_train, tok_val, tok_test = split(tokens, has_tokens=True)
 
+        def _empty_like(arr: np.ndarray) -> np.ndarray:
+            shape = list(arr.shape)
+            shape[0] = 0
+            return np.empty(shape, dtype=arr.dtype)
+
+        def _empty_tokens(arr: Optional[np.ndarray]) -> Optional[np.ndarray]:
+            if arr is None:
+                return None
+            shape = list(arr.shape)
+            shape[0] = 0
+            return np.empty(shape, dtype=arr.dtype)
+
         if cont_val is None:
-            cont_val = cont[:0]
-            tgt_val = targets[:0]
-            tok_val = tokens[:0] if tokens is not None else None
+            cont_val = _empty_like(cont_train)
+            tgt_val = _empty_like(tgt_train)
+            tok_val = _empty_tokens(tok_train)
         if cont_test is None:
-            cont_test = cont[:0]
-            tgt_test = targets[:0]
-            tok_test = tokens[:0] if tokens is not None else None
+            cont_test = _empty_like(cont_train)
+            tgt_test = _empty_like(tgt_train)
+            tok_test = _empty_tokens(tok_train)
 
         class SlidingWindowDataModule(pl.LightningDataModule):
-            def __init__(self, batch_size: int):
+            def __init__(self, batch_size: int) -> None:
                 super().__init__()
                 self.batch_size = batch_size
+                self._train_data = SlidingWindowDataset(cont_train, tgt_train, tok_train)
+                self._val_data = SlidingWindowDataset(cont_val, tgt_val, tok_val)
+                self._test_data = SlidingWindowDataset(cont_test, tgt_test, tok_test)
 
             def setup(self, stage: str | None = None) -> None:
-                self.train_dataset = SlidingWindowDataset(cont_train, tgt_train, tok_train)
-                self.val_dataset = SlidingWindowDataset(cont_val, tgt_val, tok_val)
-                self.test_dataset = SlidingWindowDataset(cont_test, tgt_test, tok_test)
+                self.train_dataset = self._train_data
+                self.val_dataset = self._val_data
+                self.test_dataset = self._test_data
 
             def train_dataloader(self):
                 return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True)

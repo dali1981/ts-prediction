@@ -63,16 +63,16 @@ class ForecastingModule(pl.LightningModule):
         preds = self(features)
         loss = F.mse_loss(preds, target)
         mae = F.l1_loss(preds, target)
-        self.log("val_loss", loss, prog_bar=True)
-        self.log("val_mae", mae, prog_bar=True)
-        return loss
+        self.log("val_loss", loss, prog_bar=True, on_step=False, on_epoch=True)
+        self.log("val_mae", mae, prog_bar=True, on_step=False, on_epoch=True)
+        return {"val_loss": loss, "val_mae": mae}
 
     def test_step(self, batch, batch_idx: int):
         features, target = batch
         preds = self(features)
         loss = F.mse_loss(preds, target)
         self.log("test_loss", loss)
-        return loss
+        return {"test_loss": loss}
 
     def configure_optimizers(self):
         return torch.optim.AdamW(

@@ -34,6 +34,7 @@ class TrainerConfig:
     precision: str = "16-mixed"
     gradient_clip_val: float = 1.0
     devices: Optional[Union[int, str]] = None
+    log_to_csv: bool = True
 
 
 @dataclass(slots=True)

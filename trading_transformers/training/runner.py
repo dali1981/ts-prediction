@@ -14,7 +14,16 @@ except ModuleNotFoundError as exc:  # pragma: no cover
     raise RuntimeError("pytorch_lightning must be installed to use ExperimentRunner") from exc
 
 from ..data import DataCatalog
-from ..models import FusionBackbone, FusionConfig, PatchTSTBackbone, PatchTSTConfig
+from ..models import (
+    FusionBackbone,
+    FusionConfig,
+    PatchTSTBackbone,
+    PatchTSTConfig,
+    PatchTSTReference,
+    PatchTSTReferenceConfig,
+    TemporalFusionTransformerBackbone,
+    TemporalFusionTransformerConfig,
+)
 from ..tokenizers import BrooksTokenVocabulary
 from ..evaluation.diagnostics import fusion_token_report
 from .config import ExperimentConfig
@@ -68,6 +77,31 @@ class ExperimentRunner:
                 dropout=model_cfg.get("dropout", 0.1),
             )
             return PatchTSTBackbone(config=patch_config)
+        if model_type == "patchtst_reference":
+            patch_config = PatchTSTReferenceConfig(
+                input_dim=model_cfg.get("input_dim", len(self.config.data.features)),
+                patch_length=model_cfg.get("patch_length", 16),
+                stride=model_cfg.get("stride", 8),
+                d_model=model_cfg.get("d_model", 256),
+                nheads=model_cfg.get("nheads", 8),
+                depth=model_cfg.get("depth", 6),
+                dropout=model_cfg.get("dropout", 0.2),
+                feedforward_dim=model_cfg.get("feedforward_dim"),
+            )
+            return PatchTSTReference(config=patch_config)
+        if model_type == "tft":
+            if not self.config.data.include_future_features:
+                # enable future features automatically for TFT-style models
+                self.config.data.include_future_features = True
+            tft_config = TemporalFusionTransformerConfig(
+                input_dim=model_cfg.get("input_dim", len(self.config.data.features)),
+                d_model=model_cfg.get("d_model", 256),
+                nheads=model_cfg.get("nheads", 8),
+                depth=model_cfg.get("depth", 4),
+                dropout=model_cfg.get("dropout", 0.1),
+                feedforward_dim=model_cfg.get("feedforward_dim"),
+            )
+            return TemporalFusionTransformerBackbone(config=tft_config)
         if model_type == "fusion":
             vocab_size = model_cfg.get("token_vocab_size") or self._vocab_size()
             if vocab_size is None:

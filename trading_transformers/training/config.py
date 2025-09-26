@@ -19,6 +19,7 @@ class DataConfig:
     test_fraction: float = 0.1
     token_column: Optional[str] = None
     vocab_path: Optional[str] = None
+    include_future_features: bool = False
 
 
 @dataclass(slots=True)

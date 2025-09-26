@@ -5,8 +5,10 @@ This package contains the initial scaffolding for the transformer-based financia
 - `data`: catalog management, zip archive staging, basic resampling utilities, and a CLI (`python -m trading_transformers.data`).
 - `features`: continuous bar feature generation and Brooks-style token emission (rule-based prototype).
 - `tokenizers`: vocabulary helper for Brooks tokens plus analytics CLI (`python -m trading_transformers.tokenizers`).
-- `models`: PatchTST-inspired backbone, Hugging Face `TimeSeriesTransformer` wrapper, and a fusion encoder for continuous+token inputs.
+- `models`: PatchTST-inspired backbone, reference PatchTST variant, Hugging Face `TimeSeriesTransformer` wrapper, a fusion encoder for continuous+token inputs, and a simplified Temporal Fusion Transformer.
 - `training`: experiment configuration dataclasses, sliding-window dataset builder, PyTorch Lightning forecasting module, experiment runner, and CLI (`python -m trading_transformers.training`) with diagnostics export.
+- Validation now logs additional forecast diagnostics inspired by `enhanced_eval.py`: RMSE, MAPE, bias, volatility ratio, directional accuracy, long/short precision, hit-rate, and correlation alongside the existing loss/MAE metrics.
+- Reference implementations for comparison: [PatchTST (official PyTorch repo)](https://github.com/yuqinie98/PatchTST?utm_source=chatgpt.com) and [Temporal Fusion Transformer (Google Research)](https://github.com/google-research/google-research/tree/master/tft) offer the original paper baselines used to benchmark this codebase.
 - `evaluation`: metrics/backtest helpers plus CLIs (`python -m trading_transformers.evaluation`, `python -m trading_transformers.backtest`).
 
 Next steps include tokenizer refinement, fusion architectures, and richer backtesting/reporting as outlined in `PLAN.md`.
@@ -57,4 +59,3 @@ Example with explicit MPS accelerator::
 
     python -m trading_transformers.training --config trading_transformers/configs/fusion.yaml \
         --catalog notebooks/_tmp/catalog.json --accelerator mps --devices 1
-
